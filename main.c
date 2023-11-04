@@ -4,7 +4,7 @@
 #define LEOPARDO "L";
 #define TIGRE "T";
 
-
+static int num_leopardos = 6;
 
 typedef struct nodo{
     int identificador;
@@ -132,6 +132,7 @@ void mover_tigre_izquierda(nodo* pieza){
                 pieza->ocupado[0] = " ";
                 campo_izquierda->ocupado[0] = " ";
                 campo_izquierda->izquierda->ocupado[0] = "T";
+                num_leopardos--;
             }
         } else{
             campo_izquierda->ocupado[0] = pieza->ocupado[0];
@@ -151,6 +152,7 @@ void mover_tigre_derecha(nodo* pieza){
                 pieza->ocupado[0] = " ";
                 campo_derecha->ocupado[0] = " ";
                 campo_derecha->derecha->ocupado[0] = "T";
+                num_leopardos--;
             }
         } else{
             campo_derecha->ocupado[0] = pieza->ocupado[0];
@@ -170,6 +172,7 @@ void mover_tigre_arriba(nodo* pieza){
                 pieza->ocupado[0] = " ";
                 campo_arriba->ocupado[0] = " ";
                 campo_arriba->arriba->ocupado[0] = "T";
+                num_leopardos--;
             }
         } else{
             campo_arriba->ocupado[0] = pieza->ocupado[0];
@@ -189,6 +192,8 @@ void mover_tigre_abajo(nodo* pieza){
                 pieza->ocupado[0] = " ";
                 campo_abajo->ocupado[0] = " ";
                 campo_abajo->abajo->ocupado[0] = "T";
+                num_leopardos--;
+                
             }
         } else{
             campo_abajo->ocupado[0] = pieza->ocupado[0];
