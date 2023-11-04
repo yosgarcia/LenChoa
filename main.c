@@ -193,7 +193,7 @@ void mover_tigre_abajo(nodo* pieza){
                 campo_abajo->ocupado[0] = " ";
                 campo_abajo->abajo->ocupado[0] = "T";
                 num_leopardos--;
-                
+
             }
         } else{
             campo_abajo->ocupado[0] = pieza->ocupado[0];
@@ -202,6 +202,27 @@ void mover_tigre_abajo(nodo* pieza){
     } else{
         printf("No se puede mover la pieza. Borde del tablero\n");
     }
+}
+
+
+
+nodo* buscar_casilla(nodo* raiz, int identificador){
+    nodo* actual = raiz->derecha;
+
+    while(actual->identificador < identificador){
+        actual = actual->abajo;
+    }
+    if(actual->identificador == identificador){
+        return actual;
+    }
+    while(actual->identificador > identificador){
+        actual = actual->izquierda;
+    }
+    if(actual->identificador == identificador){
+        return actual;
+    }
+    return NULL;
+
 }
 
 
