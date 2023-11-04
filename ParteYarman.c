@@ -107,10 +107,50 @@ void añadir_nivel(){
 
 }
 int main(){
-    nodo* raiz= inicializar_raiz();
+    printf("Bienvenido a Len Choa\n");
+    printf("Digite la cantidad de niveles:\n");
+
+    int niveles;
+    int choice;
+    while (1) {
+        
+
+        if (scanf("%d", &niveles) != 1) {
+            printf("Entrada invalidad, digite un numero.\n");
+            while (getchar() != '\n'); 
+            
+            continue;
+        }
+        if (niveles>3)
+        {
+            
+            break;
+        }
+        printf("El minimo de niveles es 4.\n");
+        
+        
+    }
+     nodo* raiz= inicializar_raiz();
    
   
-    inicializar_niveles(raiz,5);
+    inicializar_niveles(raiz,niveles-1);
     imprimir_tablero(raiz);
+   
+    
+    while (1) {
+        printf("Simple Menu\n");
+        printf("1. Option 1\n");
+        printf("2. Option 2\n");
+        printf("3. Option 3\n");
+        printf("4. Quit\n");
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            continue;
+        }
+    }
+   
     return 0;
 }
