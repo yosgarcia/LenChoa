@@ -12,13 +12,15 @@ typedef struct nodo{
 nodo* inicializar_raiz(){
     nodo* raiz = calloc(1,sizeof(nodo));
     raiz->identificador =1;
+    raiz->ocupado[0]='o';
+    raiz->ocupado[1]='\0';
     return raiz;
 }
 nodo* inicializar_nodo(int identificador){
     nodo* nuevo_novo=calloc(1,sizeof(nodo));
     nuevo_novo->identificador=identificador;
-    nuevo_novo->ocupado[0]=" ";
-    nuevo_novo->ocupado[1]="\0";
+    nuevo_novo->ocupado[0]='o';
+    nuevo_novo->ocupado[1]='\0';
     return nuevo_novo;
 
 }
@@ -86,13 +88,17 @@ void inicializar_niveles(nodo* raiz, int niveles){
 }
 
 void imprimir_tablero(nodo* raiz){
-    printf("---%d---\n",raiz->identificador);
+    int nivel=0;
+    printf("1--2--3   Columnas\n");
+    printf("---%c---   Nivel: %d\n",raiz->ocupado[0],nivel);
+    
     
     nodo* actual=raiz->abajo;
     while (actual!=NULL)
     {
+        nivel++;
         printf("|--|--|\n");
-        printf("%d--%d--%d\n",actual->izquierda->identificador,actual->identificador,actual->derecha->identificador);
+        printf("%c--%c--%c   Nivel: %d\n",actual->izquierda->ocupado[0],actual->ocupado[0],actual->derecha->ocupado[0],nivel);
         actual=actual->abajo;
     }
     
