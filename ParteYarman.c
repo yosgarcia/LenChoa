@@ -19,10 +19,10 @@ nodo *inicializar_raiz()
     raiz->identificador = 1;
     raiz->ocupado[0] = VACIO;
     raiz->ocupado[1] = '\0';
-    raiz->arriba=NULL;
-    raiz->abajo=NULL;
-    raiz->derecha=NULL;
-    raiz->izquierda=NULL;
+    raiz->arriba = NULL;
+    raiz->abajo = NULL;
+    raiz->derecha = NULL;
+    raiz->izquierda = NULL;
     return raiz;
 }
 nodo *inicializar_nodo(int identificador)
@@ -31,10 +31,10 @@ nodo *inicializar_nodo(int identificador)
     nuevo_novo->identificador = identificador;
     nuevo_novo->ocupado[0] = VACIO;
     nuevo_novo->ocupado[1] = '\0';
-    nuevo_novo->arriba=NULL;
-    nuevo_novo->abajo=NULL;
-    nuevo_novo->derecha=NULL;
-    nuevo_novo->izquierda=NULL;
+    nuevo_novo->arriba = NULL;
+    nuevo_novo->abajo = NULL;
+    nuevo_novo->derecha = NULL;
+    nuevo_novo->izquierda = NULL;
     return nuevo_novo;
 }
 void inicializar_niveles(nodo *raiz, int niveles)
@@ -44,29 +44,27 @@ void inicializar_niveles(nodo *raiz, int niveles)
         return;
     }
     nodo *actual = raiz;
-    //inicializar los nodos
+    // inicializar los nodos
     actual->izquierda = inicializar_nodo(2);
     actual->abajo = inicializar_nodo(3);
     actual->derecha = inicializar_nodo(4);
 
-    //Reasignarlos
+    // Reasignarlos
     nodo *centro_actual = actual->abajo;
     nodo *izquierdo_actual = actual->izquierda;
     nodo *derecho_actual = actual->derecha;
 
-    //Definir los parentescos
-    centro_actual->arriba=raiz;
-    izquierdo_actual->arriba=raiz;
-    derecho_actual->arriba=raiz;
+    // Definir los parentescos
+    centro_actual->arriba = raiz;
+    izquierdo_actual->arriba = raiz;
+    derecho_actual->arriba = raiz;
 
-    centro_actual->izquierda=izquierdo_actual;
-    centro_actual->derecha=derecho_actual;
+    centro_actual->izquierda = izquierdo_actual;
+    centro_actual->derecha = derecho_actual;
 
-    izquierdo_actual->derecha=centro_actual;
-    derecho_actual->izquierda=centro_actual;
-    
+    izquierdo_actual->derecha = centro_actual;
+    derecho_actual->izquierda = centro_actual;
 
-   
     for (int i = 1; i < niveles; i++)
     {
 
@@ -112,7 +110,6 @@ void imprimir_tablero(nodo *raiz)
     }
 }
 
-
 int mover_leopardo(nodo *pieza, nodo *casilla)
 {
     if (casilla != NULL)
@@ -138,38 +135,36 @@ int mover_leopardo(nodo *pieza, nodo *casilla)
     }
 }
 
-
-
 nodo *mover_tigre_izquierda(nodo *pieza)
 {
     if (pieza->izquierda != NULL)
     {
         nodo *campo_izquierda = pieza->izquierda;
         // Validamos si a la izquierda hay un leopardo
-         
+
         if (campo_izquierda->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio a la izquierda del leopardo para comerlo
-            if (campo_izquierda->izquierda != NULL )
+            if (campo_izquierda->izquierda != NULL)
             {
                 if (campo_izquierda->izquierda->ocupado[0] == VACIO)
                 {
-                     pieza->ocupado[0] = VACIO;
-                campo_izquierda->ocupado[0] = VACIO;
-                campo_izquierda->izquierda->ocupado[0] = TIGRE;
-                num_leopardos--;
-                return campo_izquierda->izquierda;
+                    pieza->ocupado[0] = VACIO;
+                    campo_izquierda->ocupado[0] = VACIO;
+                    campo_izquierda->izquierda->ocupado[0] = TIGRE;
+                    num_leopardos--;
+                    return campo_izquierda->izquierda;
                 }
-                else{
+                else
+                {
                     printf("No se puede mover la pieza. Campo ocupado y borde despues\n");
-        return pieza;
+                    return pieza;
                 }
-                
-             
             }
-            else{
+            else
+            {
                 printf("No se puede mover la pieza. Campo ocupado y borde despues\n");
-        return pieza;
+                return pieza;
             }
         }
         else
@@ -189,7 +184,6 @@ nodo *mover_tigre_izquierda(nodo *pieza)
     return pieza;
 }
 
-
 nodo *mover_tigre_derecha(nodo *pieza)
 {
     if (pieza->derecha != NULL)
@@ -199,15 +193,15 @@ nodo *mover_tigre_derecha(nodo *pieza)
         if (campo_derecha->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio a la derecha del leopardo para comerlo
-            if (campo_derecha->derecha != NULL )
+            if (campo_derecha->derecha != NULL)
             {
                 if (campo_derecha->derecha->ocupado[0] == VACIO)
                 {
-                     pieza->ocupado[0] = VACIO;
-                campo_derecha->ocupado[0] = VACIO;
-                campo_derecha->derecha->ocupado[0] = TIGRE;
-                num_leopardos--;
-                return campo_derecha->derecha;
+                    pieza->ocupado[0] = VACIO;
+                    campo_derecha->ocupado[0] = VACIO;
+                    campo_derecha->derecha->ocupado[0] = TIGRE;
+                    num_leopardos--;
+                    return campo_derecha->derecha;
                 }
             }
         }
@@ -237,19 +231,17 @@ nodo *mover_tigre_arriba(nodo *pieza)
         if (campo_arriba->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio arriba del leopardo para comerlo
-            if (campo_arriba->arriba != NULL  )
+            if (campo_arriba->arriba != NULL)
             {
                 if (campo_arriba->arriba->ocupado[0] == VACIO)
                 {
                     // Se hace el intercambio
-                pieza->ocupado[0] = VACIO;
-                campo_arriba->ocupado[0] = VACIO;
-                campo_arriba->arriba->ocupado[0] = TIGRE;
-                num_leopardos--;
-                return campo_arriba->arriba;
+                    pieza->ocupado[0] = VACIO;
+                    campo_arriba->ocupado[0] = VACIO;
+                    campo_arriba->arriba->ocupado[0] = TIGRE;
+                    num_leopardos--;
+                    return campo_arriba->arriba;
                 }
-                
-                
             }
         }
         else
@@ -278,16 +270,16 @@ nodo *mover_tigre_abajo(nodo *pieza)
         if (campo_abajo->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio abajo del leopardo para comerlo
-            if (campo_abajo->abajo != NULL  )
+            if (campo_abajo->abajo != NULL)
             {
                 if (campo_abajo->abajo->ocupado[0] == VACIO)
                 {
-                     // Se hace el intercambio
-                pieza->ocupado[0] = VACIO;
-                campo_abajo->ocupado[0] = VACIO;
-                campo_abajo->abajo->ocupado[0] = TIGRE;
-                num_leopardos--;
-                return campo_abajo->abajo;
+                    // Se hace el intercambio
+                    pieza->ocupado[0] = VACIO;
+                    campo_abajo->ocupado[0] = VACIO;
+                    campo_abajo->abajo->ocupado[0] = TIGRE;
+                    num_leopardos--;
+                    return campo_abajo->abajo;
                 }
             }
         }
@@ -308,14 +300,13 @@ nodo *mover_tigre_abajo(nodo *pieza)
     return pieza;
 }
 
-
 nodo *buscar_casilla(nodo *raiz, int identificador)
 {
-    if (identificador==1)
+    if (identificador == 1)
     {
         return raiz;
     }
-    
+
     nodo *actual = raiz->derecha;
 
     // Recorre las filas en busqueda del nivel donde se encuentra la casilla
@@ -339,8 +330,6 @@ nodo *buscar_casilla(nodo *raiz, int identificador)
     return NULL;
 }
 
-
-
 void poner_leopardo(nodo *raiz, int niveles)
 {
     int pos_leopardo;
@@ -356,7 +345,7 @@ void poner_leopardo(nodo *raiz, int niveles)
                 ;
             continue;
         }
-        if ((pos_leopardo > ((3 * niveles) + 2)) || (pos_leopardo < 1))
+        if ((pos_leopardo > ((3 * (niveles - 1)) + 1)) || (pos_leopardo < 1))
         {
             printf("Numero de Leopardo fuera de los limites del tablero\n");
             continue;
@@ -372,9 +361,8 @@ void poner_leopardo(nodo *raiz, int niveles)
     }
 }
 
-
-
-int validar_arriba(nodo* tigre){
+int validar_arriba(nodo *tigre)
+{
     if (tigre->arriba != NULL)
     {
         nodo *campo_arriba = tigre->arriba;
@@ -382,11 +370,11 @@ int validar_arriba(nodo* tigre){
         if (campo_arriba->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio arriba del leopardo para comerlo
-            if (campo_arriba->arriba != NULL  )
+            if (campo_arriba->arriba != NULL)
             {
                 if (campo_arriba->arriba->ocupado[0] == VACIO)
                 {
-                return 1;
+                    return 1;
                 }
             }
         }
@@ -402,19 +390,19 @@ int validar_arriba(nodo* tigre){
     return 0;
 }
 
-
-int validar_abajo(nodo* tigre){
+int validar_abajo(nodo *tigre)
+{
     if (tigre->abajo != NULL)
     {
         nodo *campo_abajo = tigre->abajo;
         // Validamos si abajo hay un leopardo
         if (campo_abajo->ocupado[0] == LEOPARDO)
         {
-            if (campo_abajo->abajo != NULL  )
+            if (campo_abajo->abajo != NULL)
             {
                 if (campo_abajo->abajo->ocupado[0] == VACIO)
                 {
-                return 1;
+                    return 1;
                 }
             }
         }
@@ -427,12 +415,11 @@ int validar_abajo(nodo* tigre){
     {
         return 0;
     }
-        return 0;
+    return 0;
 }
 
-
-
-int validar_izquierda(nodo* tigre){
+int validar_izquierda(nodo *tigre)
+{
     if (tigre->izquierda != NULL)
     {
         nodo *campo_izquierda = tigre->izquierda;
@@ -440,17 +427,19 @@ int validar_izquierda(nodo* tigre){
         if (campo_izquierda->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio a la izquierda del leopardo para comerlo
-            if (campo_izquierda->izquierda != NULL )
+            if (campo_izquierda->izquierda != NULL)
             {
                 if (campo_izquierda->izquierda->ocupado[0] == VACIO)
                 {
-                return 1;
+                    return 1;
                 }
-                else{
+                else
+                {
                     return 0;
                 }
             }
-            else{
+            else
+            {
                 return 0;
             }
         }
@@ -466,7 +455,8 @@ int validar_izquierda(nodo* tigre){
     return 0;
 }
 
-int validar_derecha(nodo* tigre){
+int validar_derecha(nodo *tigre)
+{
     if (tigre->derecha != NULL)
     {
         nodo *campo_derecha = tigre->derecha;
@@ -474,11 +464,11 @@ int validar_derecha(nodo* tigre){
         if (campo_derecha->ocupado[0] == LEOPARDO)
         {
             // Validamos si hay un espacio vacio a la derecha del leopardo para comerlo
-            if (campo_derecha->derecha != NULL )
+            if (campo_derecha->derecha != NULL)
             {
                 if (campo_derecha->derecha->ocupado[0] == VACIO)
                 {
-                return 1;
+                    return 1;
                 }
             }
         }
@@ -492,7 +482,6 @@ int validar_derecha(nodo* tigre){
         return 0;
     }
     return 0;
-
 }
 
 int verificar_tigre_inhabilitado(nodo *tigre)
@@ -503,9 +492,6 @@ int verificar_tigre_inhabilitado(nodo *tigre)
     }
     return 0;
 }
-
-
-
 
 int main()
 {
@@ -552,23 +538,24 @@ int main()
 
     while (!gane)
     {
-        clrscr();
+
         printf("Turno %d\n", turno);
-        printf("Numero de Leopapis %d \n",num_leopardos);
+        printf("Numero de Leopapis %d \n", num_leopardos);
         imprimir_tablero(raiz);
         if (!(turno % 2))
         {
-            if (num_leopardos<4)
+            if (num_leopardos < 4)
             {
                 printf("Los leopardos son 3 o menos, el tigre gana\n");
-                gane=1;
+                gane = 1;
                 break;
             }
-            
+
             printf("Turno de los Leopardos\n");
             if (leopardos_a_poner)
             {
                 poner_leopardo(raiz, niveles);
+                clrscr();
                 leopardos_a_poner--;
                 turno++;
                 continue;
@@ -588,7 +575,7 @@ int main()
                             ;
                         continue;
                     }
-                    if ((pos_leopardo > ((3 * niveles) + 2)) || (pos_leopardo < 1))
+                    if ((pos_leopardo > ((3 * (niveles - 1)) + 1)) || (pos_leopardo < 1))
                     {
                         printf("Numero de Leopardo fuera de los limites del tablero\n");
                         continue;
@@ -648,18 +635,20 @@ int main()
                         printf("Movimiento Invalido.\n");
                     }
                 }
-            turno++;
-            continue;
+                turno++;
+                clrscr();
+                continue;
             }
         }
-        else
-            if (!verificar_tigre_inhabilitado)
-            {
-                printf("El tigre no puede moverse, los leopardos ganan\n");
-                gane=1;
-                break;
-            }
-            
+        else if (verificar_tigre_inhabilitado(pos_tigre_actual))
+        {
+            clrscr();
+            printf("El tigre no puede moverse, los leopardos ganan\n");
+            imprimir_tablero(raiz);
+            gane = 1;
+            break;
+        }
+
         {
             printf("Turno del Tigre\n");
             printf("A donde desea mover el tigre?\n");
@@ -677,8 +666,9 @@ int main()
             switch (movimiento_tigre)
             {
             case 1:
-
+                clrscr();
                 nueva_pos_tigre = mover_tigre_arriba(pos_tigre_actual);
+
                 if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
                 {
                     pos_tigre_actual = nueva_pos_tigre;
@@ -687,7 +677,9 @@ int main()
 
                 break;
             case 2:
+                clrscr();
                 nueva_pos_tigre = mover_tigre_abajo(pos_tigre_actual);
+
                 if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
                 {
                     pos_tigre_actual = nueva_pos_tigre;
@@ -695,7 +687,9 @@ int main()
                 }
                 break;
             case 3:
+                clrscr();
                 nueva_pos_tigre = mover_tigre_izquierda(pos_tigre_actual);
+
                 if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
                 {
                     pos_tigre_actual = nueva_pos_tigre;
@@ -703,7 +697,9 @@ int main()
                 }
                 break;
             case 4:
+                clrscr();
                 nueva_pos_tigre = mover_tigre_derecha(pos_tigre_actual);
+
                 if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
                 {
                     pos_tigre_actual = nueva_pos_tigre;
