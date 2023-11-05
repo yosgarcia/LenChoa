@@ -69,8 +69,6 @@ void inicializar_niveles(nodo *raiz, int niveles)
     {
 
         // Creacion de los 3 nodos
-        // printf("%d--%d--%d\n",izquierdo_actual->identificador,centro_actual->identificador,derecho_actual->identificador);
-
         izquierdo_actual->abajo = inicializar_nodo((i * 3) + 2);
         izquierdo_actual->abajo->arriba = izquierdo_actual;
 
@@ -98,13 +96,15 @@ void imprimir_tablero(nodo *raiz)
 {
     int nivel = 0;
     printf("-------   Numero de Espacio:\n");
-    printf("---%c---    %d\n", raiz->ocupado[0], raiz->identificador);
-
+    printf("   %c         %d\n", raiz->ocupado[0], raiz->identificador);
+    printf(" / | \\ \n");
     nodo *actual = raiz->abajo;
     while (actual != NULL)
     {
+        if(nivel>0){
+            printf("|--|--|\n");
+        }
         nivel++;
-        printf("|--|--|\n");
         printf("%c--%c--%c   %d--%d--%d\n", actual->izquierda->ocupado[0], actual->ocupado[0], actual->derecha->ocupado[0], actual->izquierda->identificador, actual->identificador, actual->derecha->identificador);
         actual = actual->abajo;
     }
@@ -526,8 +526,8 @@ int main()
     int turno = 2;
     int movimiento_tigre;
     int movimiento_leopardo;
-    printf("El tigre hace su aparicion\n");
     printf("Turno 1\n");
+    printf("El tigre hace su aparicion\n\n");
     raiz->ocupado[0] = TIGRE;
     nodo *pos_tigre_actual = raiz;
     nodo *nueva_pos_tigre;
