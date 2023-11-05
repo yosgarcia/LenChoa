@@ -44,25 +44,29 @@ void inicializar_niveles(nodo *raiz, int niveles)
         return;
     }
     nodo *actual = raiz;
+    //inicializar los nodos
     actual->izquierda = inicializar_nodo(2);
-    // Que izquierda tenga de padre a la raiz
-    actual->izquierda->arriba = actual;
-
     actual->abajo = inicializar_nodo(3);
-    // Abajo de raiz tenga de hermano izquierda al izquierdo
-    actual->abajo->izquierda = actual->izquierda;
-    actual->izquierda->derecha = actual->abajo;
-    actual->abajo->arriba = actual;
-
-    // Inicializar el derecho mas su relacion de vecindad
     actual->derecha = inicializar_nodo(4);
-    actual->derecha->arriba = actual;
-    actual->derecha->izquierda = actual->abajo;
-    actual->abajo->derecha = actual->derecha;
 
+    //Reasignarlos
     nodo *centro_actual = actual->abajo;
     nodo *izquierdo_actual = actual->izquierda;
     nodo *derecho_actual = actual->derecha;
+
+    //Definir los parentescos
+    centro_actual->arriba=raiz;
+    izquierdo_actual->arriba=raiz;
+    derecho_actual->arriba=raiz;
+
+    centro_actual->izquierda=izquierdo_actual;
+    centro_actual->derecha=derecho_actual;
+
+    izquierdo_actual->derecha=centro_actual;
+    derecho_actual->izquierda=centro_actual;
+    
+
+   
     for (int i = 1; i < niveles; i++)
     {
 
@@ -76,7 +80,7 @@ void inicializar_niveles(nodo *raiz, int niveles)
         centro_actual->abajo->arriba = centro_actual;
 
         derecho_actual->abajo = inicializar_nodo((i * 3) + 4);
-        derecho_actual->abajo->arriba = centro_actual;
+        derecho_actual->abajo->arriba = derecho_actual;
 
         // Bajar 1 nivel
         izquierdo_actual = izquierdo_actual->abajo;
@@ -550,7 +554,7 @@ int main()
             }
         }
         else
-            if (!verificar_tigre_inhabilitado)
+            if (verificar_tigre_inhabilitado)
             {
                 printf("El tigre no puede moverse, los leopardos ganan\n");
                 gane=1;
