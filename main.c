@@ -1,18 +1,51 @@
+/*********************************************************************
+ * Proyecto 4: Lenguajes de Programacion - Len Shoa
+ * Integrantes: Yarman Charpentier Castellón y Yosward Garcia Tellez
+ * 
+ * 
+ * Descripcion:
+ *      Len Choa: Leopards and Tigers es un juego originario de Tailandia,
+ *      en el cual se enfrentan un tigre contra seis leopardos. Los leopardos 
+ *      deberán intentar rodear y atrapar al tigre mientras el tigre intenta 
+ *      capturar suficientes leopardos para que no puedan inmovilizarlos.
+ *
+ * 
+ * Instrucciones de ejecución:
+ *      1. Compilar el programa con el comando gcc main.c -o main
+ *      2. Ejecutar el programa con el comando ./main
+ *      3. Ingresar la cantidad de niveles que se desea jugar
+************************************************************************/
+
 #define NULL 0
 #include <stdio.h>
 #include <stdlib.h>
+
+// Definicion de macros
 #define LEOPARDO 'L'
 #define TIGRE 'T'
 #define VACIO 'O'
 #define clrscr() printf("\e[1;1H\e[2J")
+
+// Definicion de variable global
 static int num_leopardos = 6;
+
+/**
+ * @struct nodo
+ * @brief Estructura que representa un nodo del tablero
+ */
 typedef struct nodo
 {
-    int identificador;
-    struct nodo *izquierda, *derecha, *arriba, *abajo;
-    char ocupado[2];
+    int identificador; // Identificador del nodo
+    struct nodo *izquierda, *derecha, *arriba, *abajo; // Apuntadores a los nodos adyacentes
+    char ocupado[2]; // Caracter que indica si el nodo esta ocupado por un tigre, un leopard o esta vacio
 } nodo;
 
+
+
+/**
+ * @brief Función que se encarga de iniciliazar la raiz del tablero
+ * @return nodo* Primer nodo del tablero incializado
+ */
 nodo *inicializar_raiz()
 {
     nodo *raiz = calloc(1, sizeof(nodo));
@@ -25,6 +58,14 @@ nodo *inicializar_raiz()
     raiz->izquierda = NULL;
     return raiz;
 }
+
+
+/**
+ * @brief Funció encargada de inciar el nodo segpun el identificar que se le pase
+ * 
+ * @param identificador Número que se usará como de identificador del nodo
+ * @return nodo* Nodo inicializado 
+ */
 nodo *inicializar_nodo(int identificador)
 {
     nodo *nuevo_novo = calloc(1, sizeof(nodo));
@@ -37,6 +78,14 @@ nodo *inicializar_nodo(int identificador)
     nuevo_novo->izquierda = NULL;
     return nuevo_novo;
 }
+
+
+/**
+ * @brief Función que se encarga de inicializar los niveles del tablero
+ * 
+ * @param raiz Nodo raiz del tablero
+ * @param niveles Número de niveles que se desea inicializar
+ */
 void inicializar_niveles(nodo *raiz, int niveles)
 {
     if (niveles <= 0)
@@ -44,7 +93,7 @@ void inicializar_niveles(nodo *raiz, int niveles)
         return;
     }
     nodo *actual = raiz;
-    // inicializar los nodos
+    // inicializar los nodos del segundo nivel
     actual->izquierda = inicializar_nodo(2);
     actual->abajo = inicializar_nodo(3);
     actual->derecha = inicializar_nodo(4);
@@ -92,6 +141,12 @@ void inicializar_niveles(nodo *raiz, int niveles)
     }
 }
 
+
+/**
+ * @brief Función que se encarga de imprimir el tablero
+ * 
+ * @param raiz Nodo raiz del tablero
+ */
 void imprimir_tablero(nodo *raiz)
 {
     int nivel = 0;
@@ -110,6 +165,14 @@ void imprimir_tablero(nodo *raiz)
     }
 }
 
+
+/**
+ * @brief Función que se encarga de mover un leopardo a una casilla
+ * 
+ * @param pieza Leopardo que se desea mover
+ * @param casilla La casiila a la que se desea mover el leopardo
+ * @return int 0 si se pudo mover, 1 si no se pudo mover
+ */
 int mover_leopardo(nodo *pieza, nodo *casilla)
 {
     if (casilla != NULL)
@@ -135,6 +198,13 @@ int mover_leopardo(nodo *pieza, nodo *casilla)
     }
 }
 
+
+/**
+ * @brief Funcion que valida y mueve el tigre a la izquierda en el tablero
+ * 
+ * @param pieza Casilla en la que se encuentra el tigre
+ * @return nodo* Nodo al que se movia el tigre
+ */
 nodo *mover_tigre_izquierda(nodo *pieza)
 {
     if (pieza->izquierda != NULL)
@@ -149,10 +219,11 @@ nodo *mover_tigre_izquierda(nodo *pieza)
             {
                 if (campo_izquierda->izquierda->ocupado[0] == VACIO)
                 {
+                    // Se actualiza el tablero
                     pieza->ocupado[0] = VACIO;
                     campo_izquierda->ocupado[0] = VACIO;
                     campo_izquierda->izquierda->ocupado[0] = TIGRE;
-                    num_leopardos--;
+                    num_leopardos--; // Actualizamos la cantidad de leopardos
                     return campo_izquierda->izquierda;
                 }
                 else
@@ -184,6 +255,13 @@ nodo *mover_tigre_izquierda(nodo *pieza)
     return pieza;
 }
 
+
+/**
+ * @brief Funcion que valida y mueve el tigre a la derecha en el tablero
+ * 
+ * @param pieza Casilla en la que se encuentra el tigre
+ * @return nodo* Nuevo nodo en el que se encuentra el tigre
+ */
 nodo *mover_tigre_derecha(nodo *pieza)
 {
     if (pieza->derecha != NULL)
@@ -197,10 +275,11 @@ nodo *mover_tigre_derecha(nodo *pieza)
             {
                 if (campo_derecha->derecha->ocupado[0] == VACIO)
                 {
+                    // Se actualiza el tablero
                     pieza->ocupado[0] = VACIO;
                     campo_derecha->ocupado[0] = VACIO;
                     campo_derecha->derecha->ocupado[0] = TIGRE;
-                    num_leopardos--;
+                    num_leopardos--; // Se actualiza la cantidad de leopardos
                     return campo_derecha->derecha;
                 }
             }
@@ -222,6 +301,13 @@ nodo *mover_tigre_derecha(nodo *pieza)
     return pieza;
 }
 
+
+/**
+ * @brief Funcion que valida y mueve el tigre hacia arriba en el tablero
+ * 
+ * @param pieza Casilla en la que se encuentra el tigre
+ * @return nodo* Nueva casilla en la que se encuentra el tigre
+ */
 nodo *mover_tigre_arriba(nodo *pieza)
 {
     if (pieza->arriba != NULL)
@@ -239,7 +325,7 @@ nodo *mover_tigre_arriba(nodo *pieza)
                     pieza->ocupado[0] = VACIO;
                     campo_arriba->ocupado[0] = VACIO;
                     campo_arriba->arriba->ocupado[0] = TIGRE;
-                    num_leopardos--;
+                    num_leopardos--; // Se actualiza la cantidad de leopardos
                     return campo_arriba->arriba;
                 }
             }
@@ -261,6 +347,13 @@ nodo *mover_tigre_arriba(nodo *pieza)
     return pieza;
 }
 
+
+/**
+ * @brief Funcion que valida y mueve el tigre hacia abajo en el tablero
+ * 
+ * @param pieza Casilla en la que se encuentra el tigre
+ * @return nodo* Nueva casilla en la que se encuentra el tigre
+ */
 nodo *mover_tigre_abajo(nodo *pieza)
 {
     if (pieza->abajo != NULL)
@@ -278,7 +371,7 @@ nodo *mover_tigre_abajo(nodo *pieza)
                     pieza->ocupado[0] = VACIO;
                     campo_abajo->ocupado[0] = VACIO;
                     campo_abajo->abajo->ocupado[0] = TIGRE;
-                    num_leopardos--;
+                    num_leopardos--; // Se actualiza la cantidad de leopardos
                     return campo_abajo->abajo;
                 }
             }
@@ -300,8 +393,18 @@ nodo *mover_tigre_abajo(nodo *pieza)
     return pieza;
 }
 
+
+
+/**
+ * @brief Funcion que se encarga de buscar una casilla en el tablero
+ * 
+ * @param raiz Nodo raiz del tablero
+ * @param identificador Identificador de la casilla que se desea buscar
+ * @return nodo* Nodo que se buscaba
+ */
 nodo *buscar_casilla(nodo *raiz, int identificador)
 {
+    // Se valida la raiz
     if (identificador == 1)
     {
         return raiz;
@@ -330,13 +433,20 @@ nodo *buscar_casilla(nodo *raiz, int identificador)
     return NULL;
 }
 
+
+/**
+ * @brief Funcion que se encarga de poner un nuevo leopardo en el tablero
+ * 
+ * @param raiz Nodo raiz del tablero
+ * @param niveles Numero de niveles del tablero
+ */
 void poner_leopardo(nodo *raiz, int niveles)
 {
     int pos_leopardo;
     nodo *casilla_leopardo;
     while (1)
     {
-
+        // Se solicita la posicion en la que colocar el leopardo
         printf("Donde desea poner el leopardo?\n");
         if (scanf("%d", &pos_leopardo) != 1)
         {
@@ -345,6 +455,7 @@ void poner_leopardo(nodo *raiz, int niveles)
                 ;
             continue;
         }
+        // Valida si la posicion esta dentro de los limites del tablero
         if ((pos_leopardo > ((3 * (niveles - 1)) + 1)) || (pos_leopardo < 1))
         {
             printf("Numero de Leopardo fuera de los limites del tablero\n");
@@ -356,11 +467,18 @@ void poner_leopardo(nodo *raiz, int niveles)
             printf("Casilla Ocupada\n");
             continue;
         }
-        casilla_leopardo->ocupado[0] = LEOPARDO;
+        casilla_leopardo->ocupado[0] = LEOPARDO; // Se coloca el leopard en la casilla
         break;
     }
 }
 
+
+/**
+ * @brief Funcion que valida si el tigre esta inhabilitado en el nodo adyacente hacia arriba
+ * 
+ * @param tigre Nodo en el que se encuentra el tigre
+ * @return int 1 si esta inhabilitado, 0 si no lo esta
+ */
 int validar_arriba(nodo *tigre)
 {
     if (tigre->arriba != NULL)
@@ -390,6 +508,13 @@ int validar_arriba(nodo *tigre)
     return 0;
 }
 
+
+/**
+ * @brief Funcion que valida si el tigre esta inhabilitado en el nodo adyacente hacia abajo
+ * 
+ * @param tigre Nodo en el que se encuentra el tigre
+ * @return int 1 si esta inhabilitado, 0 si no lo esta
+ */
 int validar_abajo(nodo *tigre)
 {
     if (tigre->abajo != NULL)
@@ -418,6 +543,13 @@ int validar_abajo(nodo *tigre)
     return 0;
 }
 
+
+/**
+ * @brief Funcion que valida si el tigre esta inhabilitado en el nodo adyacente hacia la izquierda
+ * 
+ * @param tigre Nodo en el que se encuentra el tigre
+ * @return int 1 si esta inhabilitado, 0 si no lo esta
+ */
 int validar_izquierda(nodo *tigre)
 {
     if (tigre->izquierda != NULL)
@@ -455,6 +587,13 @@ int validar_izquierda(nodo *tigre)
     return 0;
 }
 
+
+/**
+ * @brief Funcion que valida si el tigre esta inhabilitado en el nodo adyacente hacia la derecha
+ * 
+ * @param tigre Nodo en el que se encuentra el tigre
+ * @return int 1 si esta inhabilitado, 0 si no lo esta
+ */
 int validar_derecha(nodo *tigre)
 {
     if (tigre->derecha != NULL)
@@ -484,6 +623,13 @@ int validar_derecha(nodo *tigre)
     return 0;
 }
 
+
+/**
+ * @brief Funcion que valida si el tigre esta inhabilitado en sus alrededores
+ * 
+ * @param tigre Nodo en el que se encuentra el tigre
+ * @return int 1 si esta inhabilitado, 0 si no lo esta
+ */
 int verificar_tigre_inhabilitado(nodo *tigre)
 {
     if (tigre->ocupado[0] == TIGRE)
@@ -492,6 +638,9 @@ int verificar_tigre_inhabilitado(nodo *tigre)
     }
     return 0;
 }
+
+
+
 
 int main()
 {
@@ -505,12 +654,13 @@ int main()
 
         if (scanf("%d", &niveles) != 1)
         {
-            printf("Entrada invalidad, digite un numero.\n");
+            printf("Entrada invalida, digite un numero.\n");
             while (getchar() != '\n')
                 ;
 
             continue;
         }
+        // Se valida que ingrese un nivel valido
         if (niveles > 3)
         {
 
@@ -518,6 +668,7 @@ int main()
         }
         printf("El minimo de niveles es 4.\n");
     }
+
     nodo *raiz = inicializar_raiz();
 
     inicializar_niveles(raiz, niveles - 1);
@@ -526,9 +677,11 @@ int main()
     int turno = 2;
     int movimiento_tigre;
     int movimiento_leopardo;
+
     printf("Turno 1\n");
     printf("El tigre hace su aparicion\n\n");
-    raiz->ocupado[0] = TIGRE;
+
+    raiz->ocupado[0] = TIGRE; // Se coloca el tigre en la raiz
     nodo *pos_tigre_actual = raiz;
     nodo *nueva_pos_tigre;
     int leopardos_a_poner = 6;
@@ -542,6 +695,7 @@ int main()
         printf("Turno %d\n", turno);
         printf("Leopardos vivos %d \n", num_leopardos);
         imprimir_tablero(raiz);
+        // Se valida si es el turno de los leopardos o tigres
         if (!(turno % 2))
         {
             if (num_leopardos < 4)
@@ -640,6 +794,7 @@ int main()
                 continue;
             }
         }
+        // Verificar si los leopardos ganan
         else if (verificar_tigre_inhabilitado(pos_tigre_actual))
         {
             clrscr();
@@ -649,70 +804,69 @@ int main()
             break;
         }
 
+        // Menu para los movimientos del tigre
+        printf("Turno del Tigre\n");
+        printf("A donde desea mover el tigre?\n");
+        printf("1. Arriba\n");
+        printf("2. Abajo\n");
+        printf("3. Izquierda\n");
+        printf("4. Derecha\n");
+        if (scanf("%d", &movimiento_tigre) != 1)
         {
-            printf("Turno del Tigre\n");
-            printf("A donde desea mover el tigre?\n");
-            printf("1. Arriba\n");
-            printf("2. Abajo\n");
-            printf("3. Izquierda\n");
-            printf("4. Derecha\n");
-            if (scanf("%d", &movimiento_tigre) != 1)
-            {
-                printf("Entrada invalida digite un numero.\n");
-                while (getchar() != '\n')
-                    ;
-                continue;
-            }
-            switch (movimiento_tigre)
-            {
-            case 1:
-                clrscr();
-                nueva_pos_tigre = mover_tigre_arriba(pos_tigre_actual);
-
-                if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
-                {
-                    pos_tigre_actual = nueva_pos_tigre;
-                    turno++;
-                }
-
-                break;
-            case 2:
-                clrscr();
-                nueva_pos_tigre = mover_tigre_abajo(pos_tigre_actual);
-
-                if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
-                {
-                    pos_tigre_actual = nueva_pos_tigre;
-                    turno++;
-                }
-                break;
-            case 3:
-                clrscr();
-                nueva_pos_tigre = mover_tigre_izquierda(pos_tigre_actual);
-
-                if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
-                {
-                    pos_tigre_actual = nueva_pos_tigre;
-                    turno++;
-                }
-                break;
-            case 4:
-                clrscr();
-                nueva_pos_tigre = mover_tigre_derecha(pos_tigre_actual);
-
-                if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
-                {
-                    pos_tigre_actual = nueva_pos_tigre;
-                    turno++;
-                }
-                break;
-                // turno tigre
-            default:
-                printf("Movimiento Invalido.\n");
-            }
+            printf("Entrada invalida digite un numero.\n");
             while (getchar() != '\n')
                 ;
+            continue;
         }
+        switch (movimiento_tigre)
+        {
+        case 1:
+            clrscr();
+            nueva_pos_tigre = mover_tigre_arriba(pos_tigre_actual);
+
+            if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
+            {
+                pos_tigre_actual = nueva_pos_tigre;
+                turno++;
+            }
+
+            break;
+        case 2:
+            clrscr();
+            nueva_pos_tigre = mover_tigre_abajo(pos_tigre_actual);
+
+            if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
+            {
+                pos_tigre_actual = nueva_pos_tigre;
+                turno++;
+            }
+            break;
+        case 3:
+            clrscr();
+            nueva_pos_tigre = mover_tigre_izquierda(pos_tigre_actual);
+
+            if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
+            {
+                pos_tigre_actual = nueva_pos_tigre;
+                turno++;
+            }
+            break;
+        case 4:
+            clrscr();
+            nueva_pos_tigre = mover_tigre_derecha(pos_tigre_actual);
+
+            if (nueva_pos_tigre->identificador != pos_tigre_actual->identificador)
+            {
+                pos_tigre_actual = nueva_pos_tigre;
+                turno++;
+            }
+            break;
+        default:
+            printf("Movimiento Invalido.\n");
+        }
+        while (getchar() != '\n')
+            ;
+        
     }
 
     return 0;
