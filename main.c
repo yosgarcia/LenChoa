@@ -109,11 +109,6 @@ void imprimir_tablero(nodo* raiz){
 
 
 
-void annadir_vivel(){
-
-}
-
-
 
 void mover_leopardo(nodo* pieza, nodo* casilla){
     if(casilla != NULL){
@@ -131,7 +126,7 @@ void mover_leopardo(nodo* pieza, nodo* casilla){
 }
 
 
-void mover_tigre_izquierda(nodo* pieza){
+nodo* mover_tigre_izquierda(nodo* pieza){
     if(pieza->izquierda != NULL){
         nodo* campo_izquierda = pieza->izquierda;
         // Validamos si a la izquierda hay un leopardo
@@ -142,19 +137,22 @@ void mover_tigre_izquierda(nodo* pieza){
                 campo_izquierda->ocupado[0] = VACIO;
                 campo_izquierda->izquierda->ocupado[0] = TIGRE;
                 num_leopardos--;
+                return campo_izquierda->izquierda;
             }
         } else{
             // Se desplaza a la posicion vacia
             campo_izquierda->ocupado[0] = pieza->ocupado[0];
             pieza->ocupado[0] = VACIO;
+            return campo_izquierda;
         }
     } else{
         printf("No se puede mover la pieza. Borde del tablero\n");
+        return pieza;
     }
 }
 
 
-void mover_tigre_derecha(nodo* pieza){
+nodo* mover_tigre_derecha(nodo* pieza){
     if(pieza->derecha != NULL){
         nodo* campo_derecha = pieza->derecha;
         // Validamos si a la derecha hay un leopardo
@@ -165,19 +163,22 @@ void mover_tigre_derecha(nodo* pieza){
                 campo_derecha->ocupado[0] = VACIO;
                 campo_derecha->derecha->ocupado[0] = TIGRE;
                 num_leopardos--;
+                return campo_derecha->derecha;
             }
         } else{
             // Se desplaza a la posicion vacia
             campo_derecha->ocupado[0] = pieza->ocupado[0];
             pieza->ocupado[0] = VACIO;
+            return campo_derecha;
         }
     } else{
         printf("No se puede mover la pieza. Borde del tablero\n");
+        return pieza;
     }
 }
 
 
-void mover_tigre_arriba(nodo* pieza){
+nodo* mover_tigre_arriba(nodo* pieza){
     if(pieza->arriba != NULL){
         nodo* campo_arriba = pieza->arriba;
         // Validamos si arriba hay un leopardo
@@ -189,19 +190,22 @@ void mover_tigre_arriba(nodo* pieza){
                 campo_arriba->ocupado[0] = VACIO;
                 campo_arriba->arriba->ocupado[0] = TIGRE;
                 num_leopardos--;
+                return campo_arriba->arriba;
             }
         } else{
             // Se desplaza a la posicion vacia
             campo_arriba->ocupado[0] = pieza->ocupado[0];
             pieza->ocupado[0] = VACIO;
+            return campo_arriba;
         }
     } else{
         printf("No se puede mover la pieza. Borde del tablero\n");
+        return pieza;
     }
 }
 
 
-void mover_tigre_abajo(nodo* pieza){
+nodo* mover_tigre_abajo(nodo* pieza){
     if(pieza->abajo != NULL){
         nodo* campo_abajo = pieza->abajo;
         // Validamos si abajo hay un leopardo
@@ -213,15 +217,17 @@ void mover_tigre_abajo(nodo* pieza){
                 campo_abajo->ocupado[0] = VACIO;
                 campo_abajo->abajo->ocupado[0] = TIGRE;
                 num_leopardos--;
-
+                return campo_abajo->abajo;
             }
         } else{
             // Se desplaza a la posicion vacia
             campo_abajo->ocupado[0] = pieza->ocupado[0];
             pieza->ocupado[0] = VACIO;
+            return campo_abajo;
         }
     } else{
         printf("No se puede mover la pieza. Borde del tablero\n");
+        return pieza;
     }
 }
 
@@ -249,7 +255,31 @@ nodo* buscar_casilla(nodo* raiz, int identificador){
 }
 
 
-int verificar_tigre_inhabilitado(nodo* raiz){
+int verificar_tigre_inhabilitado(nodo* tigre){
+    if(tigre->ocupado[0] == TIGRE){
+        // Verificamos si el tigre esta inhabilitado
+        if(tigre->izquierda != NULL && tigre->izquierda->ocupado[0] == LEOPARDO){
+            if(tigre->izquierda->izquierda != NULL && tigre->izquierda->izquierda->ocupado[0] == LEOPARDO){
+                return 1;
+            }
+        }
+        if(tigre->derecha != NULL && tigre->derecha->ocupado[0] == LEOPARDO){
+            if(tigre->derecha->derecha != NULL && tigre->derecha->derecha->ocupado[0] == LEOPARDO){
+                return 1;
+            }
+        }
+        if(tigre->arriba != NULL && tigre->arriba->ocupado[0] == LEOPARDO){
+            if(tigre->arriba->arriba != NULL && tigre->arriba->arriba->ocupado[0] == LEOPARDO){
+                return 1;
+            }
+        }
+        if(tigre->abajo != NULL && tigre->abajo->ocupado[0] == LEOPARDO){
+            if(tigre->abajo->abajo != NULL && tigre->abajo->abajo->ocupado[0] == LEOPARDO){
+                return 1;
+            }
+        }
+        return 0;
+    }
 
 }
 
