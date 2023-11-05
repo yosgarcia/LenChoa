@@ -540,7 +540,7 @@ int main()
     {
 
         printf("Turno %d\n", turno);
-        printf("Numero de Leopapis %d \n", num_leopardos);
+        printf("Leopardos vivos %d \n", num_leopardos);
         imprimir_tablero(raiz);
         if (!(turno % 2))
         {
